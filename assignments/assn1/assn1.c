@@ -9,18 +9,22 @@
 #include <stdlib.h>
 #include <time.h>
 
+// User inputs for betting
 #define BET_CALL 1
 #define BET_RAISE 2
 #define BET_FOLD 3
 
+// Returned amount by `*_turn` functions
 #define AMOUNT_CALL 0
 #define AMOUNT_FOLD -1
 
+// Scores of card combination
 #define SCORE_TRIPLE 3
 #define SCORE_STRAIGHT 2
 #define SCORE_DOUBLE 1
 #define SCORE_NO_PAIR 0
 
+// Player types
 #define PLAYER_USER 0
 #define PLAYER_COMPUTER 1
 
