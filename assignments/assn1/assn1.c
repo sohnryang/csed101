@@ -24,10 +24,6 @@
 #define PLAYER_USER 0
 #define PLAYER_COMPUTER 1
 
-#define MESSAGE_INPUT 0
-#define MESSAGE_BET 1
-#define MESSAGE_ERROR 2
-
 // Check if `num` is in a closed interval [a, b].
 int is_valid_num(int a, int b, int num);
 
