@@ -93,8 +93,7 @@ int main() {
   while (true) {
     if (round > 10 || user_chips * computer_chips == 0)
       break;
-    if (round != 1)
-      clear_screen();
+    clear_screen();
     int shared_card1, shared_card2, user_card, computer_card;
     card_shuffle(&shared_card1, &shared_card2, &user_card, &computer_card);
     print_game_status(round, user_chips, computer_chips);
