@@ -18,11 +18,11 @@
 #define ERROR 0.00001
 
 // Supported operations.
-#define OP_HIST 1
-#define OP_CHANGE_COLOR 2
-#define OP_PRINT 3
-#define OP_SAVE 4
-#define OP_EXIT 5
+#define OP_HIST 1         // print histogram
+#define OP_CHANGE_COLOR 2 // change image color
+#define OP_PRINT 3        // print the image
+#define OP_SAVE 4         // save current image in memory
+#define OP_EXIT 5         // exit the program
 
 // Consts for results.
 #define RES_SUCCESS 0 // the function was successful
@@ -75,7 +75,7 @@ int quantize_hue(float h);
 void change_color(float image_hsv[][SIZE][SIZE], int width, int height,
                   int source, int target);
 
-// Set terminal output color.
+// Set terminal output color according to RGB values.
 void set_output_color_rgb(int r, int g, int b);
 
 // Reset terminal output color.
@@ -101,7 +101,7 @@ int main() {
       load_image(filename, image_rgb, image_hsv, &image_width, &image_height);
   if (load_result == RES_ERROR) {
     printf("File not found: %s\n", filename);
-    return 0;
+    return 0; // this prematuarely quits the program.
   }
 
   bool finish = false;
@@ -113,6 +113,7 @@ int main() {
       print_histogram(image_hsv, image_width, image_height);
       break;
     case OP_CHANGE_COLOR:
+      // Print current histogram before prompting about colors.
       print_histogram(image_hsv, image_width, image_height);
       choose_colors(&source, &target);
       change_color(image_hsv, image_width, image_height, source, target);
@@ -129,9 +130,9 @@ int main() {
       finish = true;
       break;
     default:
-      return 1; // This must not happen
+      return 1; // this must not happen
     }
-    printf("\n");
+    printf("\n"); // print newline for better aesthetic.
   }
   return 0;
 }
@@ -149,7 +150,7 @@ int compare_f(float a, float b) {
     return 0;
   else if (a > b)
     return 1;
-  return -1;
+  return -1; // if a < b
 }
 
 int load_image(const char *filename, int image_rgb[][SIZE][SIZE],
@@ -160,8 +161,8 @@ int load_image(const char *filename, int image_rgb[][SIZE][SIZE],
   char signature[3];  // must be "P3"
   fscanf(image_fp, "%s", signature); // input "P3" signature from file
   fscanf(image_fp, "%d %d", width,
-         height); // input width and height of the image
-  int channel_len;
+         height);  // input width and height of the image
+  int channel_len; // must be 255
   fscanf(image_fp, "%d", &channel_len);
   for (int y = 0; y < *height; y++)
     for (int x = 0; x < *width; x++) {
@@ -200,17 +201,19 @@ void print_image(int image_rgb[][SIZE][SIZE], int width, int height) {
 }
 
 void print_histogram(float image_hsv[][SIZE][SIZE], int width, int height) {
+  // An array to hold number of pixels in specific h value interval.
   int pixel_count[12] = {0};
   for (int y = 0; y < height; y++)
     for (int x = 0; x < width; x++)
+      // Colors with zero saturation are ignored.
       pixel_count[quantize_hue(image_hsv[0][y][x])] +=
-          !abs_equal(image_hsv[1][y][x], 0); // colors with s=0 are ignored
+          !abs_equal(image_hsv[1][y][x], 0);
   for (int i = 0; i < 12; i++) {
     printf("[%2d]", i);
     int r, g, b;
     // Pre-calculating lookup tables might be a better idea.
     hsv_to_rgb(30 * i, 1, 1, &r, &g, &b);
-    set_output_color_rgb(r, g, b);
+    set_output_color_rgb(r, g, b); // set bar color
 
     // The length of histogram bars are one-tenth of the actual count.
     for (int j = 0; j < pixel_count[i] / 10; j++)
@@ -267,7 +270,7 @@ void change_color(float image_hsv[][SIZE][SIZE], int width, int height,
     for (int x = 0; x < width; x++) {
       float *h = &image_hsv[0][y][x]; // only hue value is necessary
       *h += delta * 30;               // change color
-      // Normalize hue value.
+      // Normalize hue value to fit in [0, 360) interval.
       if (compare_f(*h, 0) < 0)
         *h += 360; // if hue is negative, add 360
       else if (compare_f(*h, 360) >= 0)
@@ -283,7 +286,15 @@ void hsv_to_rgb(float h, float s, float v, int *r, int *g, int *b) {
   int quantized_h = quantize_hue(h);
   // Exploit symmetry to eliminate braches, which are detrimental to
   // performance.
-  // By arranging
+  // The indices of c and x are as follows:
+  //
+  // h |11 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |10
+  // ==================================================
+  // c | 0 | 0 | 0 | 0 | 1 | 1 | 1 | 1 | 2 | 2 | 2 | 2
+  // x | 2 | 2 | 1 | 1 | 0 | 0 | 2 | 2 | 1 | 1 | 0 | 0
+  //
+  // As one can see, there is a clear pattern. The following code follows the
+  // pattern using modulo operations.
   normalized[(quantized_h / 2 + 1) % 6 / 2] = c;
   normalized[2 - (quantized_h / 2 + 1) % 3] = x;
   *r = (normalized[0] + m) * 255;
