@@ -262,7 +262,7 @@ void print_ladder(int **board, int **visited_map, int parties, int height) {
     printf("\n");
   }
   for (int i = 0; i < parties; i++)
-    printf("  %d ", i + 1);
+    printf(" %2d ", i + 1);
   printf("\n");
 }
 
