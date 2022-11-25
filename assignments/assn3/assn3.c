@@ -184,24 +184,23 @@ void draw_vertical(int **board, int parties, int height) {
 void generate_ladder(int **board, int num_line, int parties, int height) {
   draw_vertical(board, parties, height);
 
-  int slot_count =
-      (height - 2) / 2 * (parties - 1) + (parties - 1) / 2 + (parties - 1) % 2;
-  int *lookup = calloc(slot_count, sizeof(int));
-  for (int i = 0; i < num_line; i++)
-    lookup[i] = 1;
-  for (int i = num_line; i < slot_count; i++) {
-    int j = rand() % i;
-    if (j <= num_line) {
-      int tmp = lookup[i];
-      lookup[i] = lookup[j];
-      lookup[j] = tmp;
-    }
+  int count = 0;
+  while (count < num_line) {
+    int y = 1 + rand() % (height - 2);
+    int x = rand() % (parties - 1) * 2 + 1;
+    if (board[y][x])
+      continue;
+    if (x > 2 && board[y][x - 2])
+      continue;
+    if (x < 2 * parties - 3 && board[y][x + 2])
+      continue;
+    if (y > 1 && board[y - 1][x])
+      continue;
+    if (y < height - 1 && board[y + 1][x])
+      continue;
+    board[y][x] = 1;
+    count++;
   }
-
-  int index = 0;
-  for (int y = 1; y < height - 1; y++)
-    for (int x = 1 + 2 * (1 - y % 2); x < 2 * parties - 1; x += 4)
-      board[y][x] = lookup[index++];
 }
 
 void save_ladder(char filename[], int **board, int parties, int height,
