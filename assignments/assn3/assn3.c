@@ -194,10 +194,6 @@ void generate_ladder(int **board, int num_line, int parties, int height) {
       continue;
     if (x < 2 * parties - 3 && board[y][x + 2])
       continue;
-    if (y > 1 && board[y - 1][x])
-      continue;
-    if (y < height - 1 && board[y + 1][x])
-      continue;
     board[y][x] = 1;
     count++;
   }
