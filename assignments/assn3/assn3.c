@@ -197,8 +197,7 @@ void clear_screen() {
 }
 
 int **alloc_2d(int height, int width) {
-  int **board;
-  board = (int **)calloc(height, sizeof(int *));
+  int **board = (int **)calloc(height, sizeof(int *));
   for (int i = 0; i < height; i++)
     board[i] = (int *)calloc(width, sizeof(int));
   return board;
