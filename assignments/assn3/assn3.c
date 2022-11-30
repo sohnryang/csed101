@@ -131,6 +131,7 @@ int main() {
               for (int i = 1; i <= parties; i++)
                 printf("%d -> %c\n", i, dests[i]);
               printf("\n");
+              free(dests);
             } else
               printf("result: %d -> %c\n\n", current_source, 'A' + x / 2);
           }
