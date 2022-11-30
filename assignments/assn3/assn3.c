@@ -70,8 +70,8 @@ void traverse_step(int **board, int **visited_map, int parties, int height,
                    int *y, int *x, int source);
 
 int main() {
-  srand(time(NULL));  // set random seed to current time
-  int **ladder_board; // 2d array to hold ladder data.
+  srand(time(NULL));         // set random seed to current time
+  int **ladder_board = NULL; // 2d array to hold ladder data.
   while (true) {
     int cmd = menu_input(); // command input
     if (cmd == OP_GEN) {
