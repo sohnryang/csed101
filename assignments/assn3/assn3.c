@@ -51,11 +51,11 @@ void save_ladder(char filename[], int **board, int parties, int height,
                  int num_line);
 
 // Deallocate 2d array with height `height`.
-void free_2d(int **arr, int height);
+void free_ladder(int **arr, int height);
 
 // Load ladder from `filename`. Save relevant infos to variables referenced by
 // `parites`, `height`, `num_line`. Return `NULL` if `fopen` failed.
-int **load_ladder(char *filename, int *parties, int *height, int *num_line);
+int **load_ladder(char filename[], int *parties, int *height, int *num_line);
 
 // Print ladder saved in board. Colors are set according to `visited_map`.
 void print_ladder(int **board, int **visited_map, int parties, int height);
@@ -88,7 +88,7 @@ int main() {
       generate_ladder(ladder_board, line_count, parties, height);
       save_ladder(filename, ladder_board, parties, height, line_count);
       // `ladder_board` will be unused, so deallocate it.
-      free_2d(ladder_board, height);
+      free_ladder(ladder_board, height);
     } else if (cmd == OP_RUN) {
       printf("\n");
       printf("파일 이름: ");
@@ -154,7 +154,7 @@ int main() {
           // If `current_source` is -1, fully paint the ladder.
           if (current_source == -1) {
             // Deallocate current `visited_map` and create a new one.
-            free_2d(visited_map, height);
+            free_ladder(visited_map, height);
             // Each line contains `parties` slots for vertical lines, and
             // `parties - 1` slots for horizontal lines.
             visited_map = alloc_2d(height, parties * 2 - 1);
@@ -190,8 +190,8 @@ int main() {
       }
       // `ladder_board` and `visited_map` are unused from now, so deallocate
       // them.
-      free_2d(ladder_board, height);
-      free_2d(visited_map, height);
+      free_ladder(ladder_board, height);
+      free_ladder(visited_map, height);
     } else if (cmd == OP_EXIT) {
       break;
     } else
@@ -281,7 +281,7 @@ void save_ladder(char filename[], int **board, int parties, int height,
   fclose(outfile);
 }
 
-void free_2d(int **board, int height) {
+void free_ladder(int **board, int height) {
   // Deallocate every row.
   for (int i = 0; i < height; i++)
     free(board[i]);
@@ -289,7 +289,7 @@ void free_2d(int **board, int height) {
   free(board);
 }
 
-int **load_ladder(char *filename, int *parties, int *height, int *num_line) {
+int **load_ladder(char filename[], int *parties, int *height, int *num_line) {
   FILE *infile = fopen(filename, "r");
   if (infile == NULL) // check if file is opened properly
     return NULL;
