@@ -1,14 +1,16 @@
 CC = clang
 CFLAGS = -g -fno-omit-frame-pointer -fsanitize=address
 DEPS = functions.h
+SRCS = assn4.c functions.c
+OBJS = assn4.o functions.o
 
 all: assn4 unittest
 
-%.o: %.c $(DEPS)
-	$(CC) -c $(CFLAGS) $< -o $@
+assn4: $(OBJS)
+	$(CC) $(CFLAGS) -fuse-ld=lld $(OBJS) -o $@
 
-assn4: assn4.o functions.o
-	$(CC) $(CFLAGS) $^ -o $@
+unittest: functions.o unittest.c
+	$(CC) $(CFLAGS) -fuse-ld=lld -I/opt/homebrew/include -L/opt/homebrew/lib -lcmocka $^ -o $@
 
-unittest: functions.o unittest.o
-	$(CC) $(CFLAGS) -I/opt/homebrew/include -L/opt/homebrew/lib -lcmocka $^ -o $@
+clean:
+	rm -rf $(OBJS) unittest unittest.dSYM assn4 assn4.dSYM
