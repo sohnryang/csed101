@@ -10,7 +10,6 @@
 
 #include "functions.h"
 
-#define MAX_FILENAME_LEN 30
 #define MAX_CMD_LEN 20
 
 int main() {

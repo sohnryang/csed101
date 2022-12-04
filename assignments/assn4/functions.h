@@ -3,6 +3,7 @@
 #define MAX_TITLE_LEN 14
 #define MAX_ARTIST_NAME_LEN 14
 #define MAX_FILE_SIZE 50.0
+#define MAX_FILENAME_LEN 30
 
 #define OP_OK 1
 #define OP_ERR 0
