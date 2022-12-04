@@ -37,3 +37,5 @@ List *sort_list(List *list);
 List *load_list(char *filename);
 
 void show_fn(List *list);
+
+void exit_fn(List *list);

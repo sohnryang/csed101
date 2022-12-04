@@ -156,3 +156,19 @@ void show_fn(List *list) {
     printf("=");
   printf("\n");
 }
+
+void exit_fn(List *list) {
+  printf("저장할 파일명을 입력해주세요. >> ");
+  char filename[MAX_FILENAME_LEN + 1];
+  scanf("%s", filename);
+  FILE *outfile = fopen(filename, "w");
+  Node *current = list->head;
+  while (current != NULL) {
+    fprintf(outfile, "%s\t%s\t%f\t%f\n", current->data.title,
+            current->data.artist, current->data.file_size,
+            current->data.preference);
+    current = current->next;
+  }
+  printf("프로그램을 종료합니다.\n");
+  fclose(outfile);
+}

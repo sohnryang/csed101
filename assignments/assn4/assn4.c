@@ -35,6 +35,8 @@ int main() {
     } else if (!strcmp(cmd, "add")) {
     } else if (!strcmp(cmd, "delete")) {
     } else if (!strcmp(cmd, "exit")) {
+      exit_fn(playlist);
+      break;
     } else
       printf("유효하지 않은 명령어입니다.\n");
     printf("\n");
