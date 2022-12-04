@@ -108,6 +108,7 @@ List *load_list(char *filename) {
     if (!ok)
       printf("용량 초과! 음악(%s)은 추가되지 않았습니다.\n", song.title);
   }
+  fclose(infile);
   return list;
 }
 
