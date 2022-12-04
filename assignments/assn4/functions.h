@@ -12,5 +12,5 @@ typedef struct Node {
 
 typedef struct List {
   int size;
-  Node *head, *tail;
+  Node *head;
 } List;
