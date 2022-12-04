@@ -40,7 +40,8 @@ static void remove_list_test(void **state) {
   for (int i = 0; i < 3; i++)
     append_list(&list, songs[i]);
 
-  remove_list(&list, "b");
+  int x;
+  remove_list(&list, "b", &x);
   assert_int_equal(list.size, 2);
   assert_non_null(list.head);
   assert_string_equal(list.head->data.title, "a");

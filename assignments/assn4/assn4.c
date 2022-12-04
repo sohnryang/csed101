@@ -6,6 +6,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "functions.h"
@@ -30,16 +31,21 @@ int main() {
     char cmd[MAX_CMD_LEN + 1];
     scanf("%s", cmd);
     if (!strcmp(cmd, "show"))
-      show_fn(playlist);
-    else if (!strcmp(cmd, "show_favorites")) {
-    } else if (!strcmp(cmd, "add")) {
-    } else if (!strcmp(cmd, "delete")) {
-    } else if (!strcmp(cmd, "exit")) {
+      show_fn(playlist, playlist->size, false);
+    else if (!strcmp(cmd, "show_favorites"))
+      show_favorites_fn(playlist);
+    else if (!strcmp(cmd, "add"))
+      add_fn(playlist);
+    else if (!strcmp(cmd, "delete"))
+      delete_fn(playlist);
+    else if (!strcmp(cmd, "exit")) {
       exit_fn(playlist);
       break;
     } else
       printf("유효하지 않은 명령어입니다.\n");
     printf("\n");
   }
+  free_list(playlist);
+  free(playlist);
   return 0;
 }
