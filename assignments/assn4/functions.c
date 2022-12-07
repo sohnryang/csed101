@@ -15,10 +15,7 @@ List *new_list() {
 Node *new_node(Song song) {
   Node *created = (Node *)malloc(sizeof(Node));
   created->next = NULL;
-  strcpy(created->data.title, song.title);
-  strcpy(created->data.artist, song.artist);
-  created->data.file_size = song.file_size;
-  created->data.preference = song.preference;
+  created->data = song;
   return created;
 }
 
