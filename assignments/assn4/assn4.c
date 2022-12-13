@@ -27,7 +27,7 @@ int main() {
     if (playlist != NULL)
       break; // on successful load, break the input loop
     printf("유효하지 않은 파일입니다. ");
-    printf("음악 리스트 파일 이름을 다시 입력해주세요. >> ");
+    printf("음악 리스트 파일을 다시 입력해주세요. >> ");
   }
   printf("\n");
 
